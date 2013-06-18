@@ -1,0 +1,4 @@
+#### [Version 0.0.1 Alpha](https://github.com/ForallFramework/wrap.package/tree/0.0.1-alpha)
+_18-June-2013_
+
+* Successible classes implemented.
