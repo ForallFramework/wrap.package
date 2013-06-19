@@ -1,4 +1,4 @@
-# Wrap - Version 0.0.1 Alpha
+# Wrap - Version 0.0.2 Alpha
 
 ## Description
 
@@ -10,6 +10,7 @@ of utility functions.
 
 * Wrappers for every native data type.
 * An interface for making any object "successible".
+* A library of traits for working with a class containing an array.
 
 ### Wrappers
 
@@ -48,6 +49,48 @@ $foo
 
 The successible classes are used for all wrapping classes to provide many of the higher-
 level checks such as `$stringWrapper::eq('hi')`.
+
+### Array utilities
+
+Implement `forall\wrap\arrayutils\ArrayContainerInterface` into your class, and now you
+can use a wide range of traits (all available in the `forall\wrap\arrayutils` name space)
+that add methods for interacting with a single array within the class.
+
+#### `ArrayAccessTraits`
+
+Use this trait to add low-level interaction methods for getting values, setting values,
+unsetting values, and checking keys. This trait also implements all methods required by
+[PHP's `ArrayAccess`](http://uk1.php.net/manual/en/class.arrayaccess.php) interface.
+
+#### `ArrayGetterTraits`
+
+Use this trait to add high-level getter methods that allow for a number of different ways
+to access nodes inside the array.
+
+#### `ArrayInformationTraits`
+
+Use this trait to add methods that provide information about the array, like the
+number of nodes or whether a value exists.
+
+#### `ArrayIterationTraits`
+
+Use this trait to add low-level iteration methods for custom step-by-step iteration.
+
+#### `ArrayIteratorTraits`
+
+Use this trait to add high-level iteration methods that allow fr quick and easy iteration
+of the entire array.
+
+#### `ArrayPermissionTraits`
+
+Use this trait to add methods through which the owner of the class can get some control
+over what is allowed to happen with the array.
+
+#### `ArraySetterTraits`
+
+Use this trait to add high-level setter methods that allow for a number of different ways
+to change nodes inside the array.
+
 
 ## Change log
 
