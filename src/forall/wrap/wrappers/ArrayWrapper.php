@@ -29,7 +29,7 @@ class ArrayWrapper extends AbstractWrapper implements IteratorAggregate, ArrayAc
   use ArrayMagicTraits;
   use ArraySetterTraits;
   
-  //Define some constants.\
+  //Define some constants.
   const LEFT = -1;
   const RIGHT = 1;
   

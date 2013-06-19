@@ -30,7 +30,7 @@
       "forall\\wrap": "src/"
     },
     "files": [
-      "src/forall/core/functions.php"
+      "src/forall/wrap/functions.php"
     ]
   }
   
