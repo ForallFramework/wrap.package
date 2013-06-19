@@ -81,7 +81,7 @@ namespace forall\wrap
   {
     
     //If the input is already a wrapper, return a clone.
-    if(is_wrapped($input)){
+    if(isWrapped($input)){
       return clone $input;
     }
     

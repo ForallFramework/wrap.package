@@ -11,6 +11,9 @@ use \Closure;
 trait ArrayIteratorTraits
 {
   
+  //Require the implementation of the "& getArrayReference"-method.
+  abstract public function & getArrayReference();
+  
   /**
    * Iterate over the array, calling the given Closure for each node.
    *
@@ -29,7 +32,7 @@ trait ArrayIteratorTraits
     $i = 0;
     
     //Iterate!
-    foreach($this->arr as $key => $value)
+    foreach($this->getArrayReference() as $key => $value)
     {
       
       //Execute the callback and get its return value.
@@ -68,7 +71,7 @@ trait ArrayIteratorTraits
     $i = 0;
     
     //Iterate!
-    foreach($this->arr as $key => $value)
+    foreach($this->getArrayReference() as $key => $value)
     {
       
       //Execute the callback and get its return value.

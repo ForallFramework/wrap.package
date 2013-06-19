@@ -6,8 +6,6 @@
  */
 namespace forall\wrap\successible;
 
-use SuccessibleInterface;
-
 trait SuccessibleTraits
 {
   

@@ -4,7 +4,7 @@
  * @package forall.wrap
  * @author Avaq <aldwin.vlasblom@gmail.com>
  */
-namespace forall\wrap;
+namespace forall\wrap\wrappers;
 
 abstract class AbstractScalarWrapper extends AbstractWrapper
 {

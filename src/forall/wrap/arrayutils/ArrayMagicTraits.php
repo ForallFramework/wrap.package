@@ -11,8 +11,17 @@ use \Closure;
 trait ArrayMagicTraits
 {
   
-  //We need access to the array to perform our magic.
-  use ArrayAccessTraits;
+  //Require the implementation of the "offsetSet"-method.
+  abstract public function offsetSet($key, $value);
+  
+  //Require the implementation of the "offsetExists"-method.
+  abstract public function offsetExists($key);
+  
+  //Require the implementation of the "offsetUnset"-method.
+  abstract public function offsetUnset($key);
+  
+  //Require the implementation of the "offsetGet"-method.
+  abstract public function offsetGet($key);
   
   /**
    * Alias for self::offsetSet().

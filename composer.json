@@ -21,10 +21,17 @@
     "php": ">=5.4.0"
   },
   
+  "suggest": {
+    "forall/globalconstant": "Allows shorter notation of some of the generic constants used."
+  },
+  
   "autoload": {
     "psr-0": {
       "forall\\wrap": "src/"
-    }
+    },
+    "files": [
+      "src/forall/core/functions.php"
+    ]
   }
   
 }

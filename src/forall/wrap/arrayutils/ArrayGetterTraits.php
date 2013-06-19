@@ -9,8 +9,17 @@ namespace forall\wrap\arrayutils;
 trait ArrayGetterTraits
 {
   
-  //We require this trait in order to function.
-  use ArrayAccessTraits;
+  //Require the implementation of the "& getArrayReference"-method.
+  abstract public function & getArrayReference();
+  
+  //Require the implementation of the "offsetGet"-method.
+  abstract public function offsetGet($key);
+  
+  //Require the implementation of the "offsetUnset"-method.
+  abstract public function offsetUnset($key);
+  
+  //Require the implementation of the "offsetExists"-method.
+  abstract public function offsetExists($key);
   
   /**
    * Return the node that is present at given $index.

@@ -34,7 +34,7 @@ trait ArrayInformationTraits
   public function has($value, $strict=false)
   {
     
-    return $this->keyOf($value, $strict) !== false;
+    return $this->keyAt($value, $strict) !== false;
     
   }
   
@@ -46,7 +46,11 @@ trait ArrayInformationTraits
   public function isEmpty()
   {
     
-    return empty($this->getArrayReference());
+    //Get an actual copy of the array, or the empty construct will freak out.
+    $arr = $this->getArrayReference();
+    
+    //Do the check and return.
+    return empty($arr);
     
   }
   
@@ -58,7 +62,7 @@ trait ArrayInformationTraits
    *
    * @return mixed The key found or false.
    */
-  public function keyOf($value, $strict=false)
+  public function keyAt($value, $strict=false)
   {
     
     return array_search($value, $this->getArrayReference(), $strict);

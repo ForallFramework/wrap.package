@@ -9,8 +9,17 @@ namespace forall\wrap\arrayutils;
 trait ArraySetterTraits
 {
   
-  //We need access to the array in order to modify it.
-  use ArrayAccessTraits;
+  //Require the implementation of the "& getArrayReference"-method.
+  abstract public function & getArrayReference();
+  
+  //Require the implementation of the "offsetSet"-method.
+  abstract public function offsetSet($key, $value);
+  
+  //Require the implementation of the "offsetExists"-method.
+  abstract public function offsetExists($key);
+  
+  //Require the implementation of the "offsetUnset"-method.
+  abstract public function offsetUnset($key);
   
   /**
    * Merge one or more given arrays with the contained array.

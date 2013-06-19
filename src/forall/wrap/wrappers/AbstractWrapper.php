@@ -4,17 +4,16 @@
  * @package forall.wrap
  * @author Avaq <aldwin.vlasblom@gmail.com>
  */
-namespace forall\wrap;
+namespace forall\wrap\wrappers;
 
-use successible\SuccessibleInterface;
-use successible\SuccessibleTraits;
-use wrappers\NullWrapper;
+use forall\wrap\successible\SuccessibleInterface;
+use forall\wrap\successible\SuccessibleTraits;
 
 abstract class AbstractWrapper implements SuccessibleInterface
 {
   
   //Use the successible trait, and implement some of its methods as private members, so we can extend them.
-  use Successable
+  use SuccessibleTraits
   {
     is as private _is;
     not as private _not;
@@ -135,7 +134,7 @@ abstract class AbstractWrapper implements SuccessibleInterface
    *
    * @return boolean
    */
-  public function isSet()
+  public function isDefined()
   {
     
     return !($this instanceof NullWrapper);

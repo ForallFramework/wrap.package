@@ -9,6 +9,9 @@ namespace forall\wrap\arrayutils;
 trait ArrayIterationTraits
 {
   
+  //Require the implementation of the "& getArrayReference"-method.
+  abstract public function & getArrayReference();
+  
   /**
    * Return the value of the node under the cursor.
    *
