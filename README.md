@@ -78,7 +78,7 @@ Use this trait to add low-level iteration methods for custom step-by-step iterat
 
 #### `ArrayIteratorTraits`
 
-Use this trait to add high-level iteration methods that allow fr quick and easy iteration
+Use this trait to add high-level iterator methods that allow for quick and easy iteration
 of the entire array.
 
 #### `ArrayPermissionTraits`

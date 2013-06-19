@@ -1,4 +1,4 @@
-#### [Version 0.0.2 Alpha](https://github.com/ForallFramework/wrap.package/tree/0.0.1-alpha)
+#### [Version 0.0.2 Alpha](https://github.com/ForallFramework/wrap.package/tree/0.0.2-alpha)
 _19-June-2013_
 
 * Array utilities implemented.
