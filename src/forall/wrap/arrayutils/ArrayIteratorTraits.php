@@ -112,7 +112,6 @@ trait ArrayIteratorTraits
       //Extract the array from array containers.
       if($value instanceof ArrayContainerInterface){
         $value = $value->getArrayReference();
-        continue;
       }
       
       //Iterate arrays.
@@ -121,9 +120,11 @@ trait ArrayIteratorTraits
         
         $j=0;
         foreach($value as $key => $val){
-          $walker($value, $key, $j);
+          $walker($val, $key, $j);
           $j++;
         }
+        
+        return true;
         
       }
       
