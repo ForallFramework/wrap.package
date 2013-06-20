@@ -8,26 +8,43 @@ namespace forall\wrap\wrappers;
 
 use \ReflectionObject;
 
-class ObjectWrapper extends BaseData
+/**
+ * @method {StringWrapper} class() class() {@see ObjectWrapper::_public_class()}
+ */
+class ObjectWrapper extends AbstractWrapper
 {
   
-  //Private properties.
-  private
-    $object;
+  /**
+   * The wrapped object.
+   * @var object
+   */
+  private $object;
   
-  //Validate and set the value.
+  /**
+   * Validate and set the value.
+   *
+   * @param object $value
+   * 
+   * @throws WrapException If the given value is no object.
+   */
   public function __construct($value)
   {
     
+    //Validate.
     if(!(is_object($value))){
-      throw new \exception\InvalidArgument('Expecting $value to be an object. %s given.', typeof($value));
+      throw new WrapException(sprintf('Expecting $value to be an object. %s given.', gettype($value)));
     }
     
+    //Set.
     $this->object = $value;
     
   }
   
-  //Return the object.
+  /**
+   * Return the object.
+   *
+   * @return object
+   */
   public function get()
   {
     
@@ -35,27 +52,41 @@ class ObjectWrapper extends BaseData
     
   }
   
-  //Implement some magic to bypass reserved words.
+  /**
+   * Implement some magic to bypass reserved words.
+   * 
+   * If any non-existent method is called, this method will try to forward to a private
+   * method of the same name with "_public_" prefixed to it.
+   * 
+   * @param string $method The method to call.
+   * @param array $arguments The arguments to pass.
+   *
+   * @return mixed Whatever was returned by the matched method.
+   */
   public function __call($method, $arguments)
   {
-    
-    if(!method_exists($this, "_public_$method")){
-      throw new \exception\NonExistent('Class %s has no method %s.', get_class(), $method);
-    }
     
     return call_user_func_array([$this, "_public_$method"], $arguments);
     
   }
   
-  //Cast the object to string.
+  /**
+   * Cast the object to string.
+   *
+   * @return StringWrapper
+   */
   public function toString()
   {
     
-    return new StringWrapper('[data\Object]');
+    return new StringWrapper('['.__CLASS__.']');
     
   }
   
-  //Return the variables of this object in JSON format.
+  /**
+   * Return the variables of the wrapped object in JSON format.
+   *
+   * @return StringWrapper
+   */
   public function toJSON()
   {
     
@@ -63,7 +94,11 @@ class ObjectWrapper extends BaseData
     
   }
   
-  //Return a StringWraper containing the visual representation of this object.
+  /**
+   * Return a StringWraper containing the visual representation of this object.
+   *
+   * @return StringWrapper
+   */
   public function visualize()
   {
     
@@ -71,7 +106,11 @@ class ObjectWrapper extends BaseData
     
   }
   
-  //Get the variables in the object as a wrapped array.
+  /**
+   * Get the variables in the object as a wrapped array.
+   *
+   * @return ArrayWrapper
+   */
   public function vars()
   {
     
@@ -79,7 +118,13 @@ class ObjectWrapper extends BaseData
     
   }
   
-  //Returns a wrapped string containing the class name of the object.
+  /**
+   * Returns a wrapped string containing the class name of the object.
+   *
+   * This method is private, but publicly accessible through calling `$this->class()`.
+   *
+   * @return StringWrapper
+   */
   private function _public_class()
   {
     
@@ -87,7 +132,11 @@ class ObjectWrapper extends BaseData
     
   }
   
-  //Returns a wrapped string containing the class name of the object without namespace.
+  /**
+   * Returns a wrapped string containing the class name of the object without namespace.
+   *
+   * @return StringWrapper
+   */
   public function baseclass()
   {
     
@@ -98,7 +147,11 @@ class ObjectWrapper extends BaseData
     
   }
   
-  //Return a Reflection instance of this object.
+  /**
+   * Return a Reflection instance of this object.
+   *
+   * @return ReflectionObject
+   */
   public function getReflector()
   {
     
@@ -106,7 +159,13 @@ class ObjectWrapper extends BaseData
     
   }
   
-  //Returns true if this objects class uses the given trait.
+  /**
+   * Returns true if this objects class uses the given trait.
+   *
+   * @param string $trait_name
+   *
+   * @return BooleanWrapper
+   */
   public function uses($trait_name)
   {
     
@@ -128,25 +187,45 @@ class ObjectWrapper extends BaseData
     
   }
   
+  /**
+   * Get this objects unique ID.
+   *
+   * @return NumberWrapper
+   */
   function id()
   {
     
+    //Object ID pool.
     static $object_ids = [];
     
+    //Get the object hash.
     $hash = spl_object_hash($this->object);
     
+    //Find the object ID in out pool?
     if(array_key_exists($hash, $object_ids)){
       $id = $object_ids[$hash];
     }
     
+    //Create the object ID.
     else{
       $object_ids[$hash] = $id = (count($object_ids) + 1);
     }
     
+    //Return the object ID.
     return new NumberWrapper($id);
 
   }
-
+  
+  /**
+   * Return the unique name of this object.
+   * 
+   * Consisting of class name + object ID.
+   * 
+   * @see self::id()
+   * @see self::_public_class()
+   *
+   * @return StringWrapper
+   */
   function name()
   {
     

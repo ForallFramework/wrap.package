@@ -6,10 +6,16 @@
  */
 namespace forall\wrap\wrappers;
 
-class NullWrapper extends BaseData
+use forall\wrap\WrapException;
+
+class NullWrapper extends AbstractWrapper
 {
   
-  //Return NULL.
+  /**
+   * Return NULL.
+   *
+   * @return null
+   */
   public function get()
   {
     
@@ -17,15 +23,23 @@ class NullWrapper extends BaseData
     
   }
   
-  //Return an appropriate indication of fail.
+  /**
+   * Return the name of this class.
+   *
+   * @return StringWrapper
+   */
   public function toString()
   {
     
-    return new StringWrapper('[data\\NullWrapper]');
+    return new StringWrapper('['.__CLASS__.']');
     
   }
   
-  //Return null.
+  /**
+   * Return null.
+   *
+   * @return StringWrapper
+   */
   public function toJSON()
   {
     
@@ -33,39 +47,75 @@ class NullWrapper extends BaseData
     
   }
   
-  //Return "NULL".
+  /**
+   * Return "NULL".
+   *
+   * @return StringWrapper
+   */
   public function visualize()
   {
     
-    return new StringWrapper("NULL");
+    return new StringWrapper('"NULL"');
     
   }
   
-  //Can not call methods on NullWrapper.
+  /**
+   * Can not call methods on NullWrapper.
+   *
+   * @param mixed $key Dummy.
+   * @param mixed $args Dummy.
+   *
+   * @throws WrapException If this method gets called.
+   *
+   * @return void
+   */
   public function __call($key, $args)
   {
     
-    throw new \exception\Restriction('Can not call method "%s" of NullWrapper.', $key);
+    throw new WrapException(sprintf('Can not call method "%s" of NullWrapper.', $key));
     
   }
   
-  //Can not get nodes of NullWrapper.
+  /**
+   * Can not get nodes of NullWrapper.
+   *
+   * @param mixed $key Dummy.
+   * 
+   * @throws WrapException If this method gets called.
+   *
+   * @return void
+   */
   public function __get($key)
   {
     
-    throw new \exception\Restriction('Can not get "%s" of NullWrapper.', $key);
+    throw new WrapException(sprintf('Can not get "%s" of NullWrapper.', $key));
     
   }
   
-  //Can not set nodes of NullWrapper.
+  /**
+   * Can not set nodes of NullWrapper.
+   *
+   * @param mixed $key Dummy.
+   * @param mixed $value Dummy.
+   * 
+   * @throws WrapException If this method gets called.
+   * 
+   * @return void
+   */
   public function __set($key, $value)
   {
     
-    throw new \exception\Restriction('Can not set "%s" of NullWrapper.', $key);
+    throw new WrapException(sprintf('Can not set "%s" of NullWrapper.', $key));
     
   }
   
-  //Return the wrapped value.
+  /**
+   * Return the wrapped value.
+   *
+   * @param mixed $value Anything.
+   *
+   * @return AbstractWrapper Wrapping whatever was given as argument.
+   */
   public function alt($value)
   {
     
@@ -73,7 +123,11 @@ class NullWrapper extends BaseData
     
   }
   
-  //NullWrapper is always empty.
+  /**
+   * NullWrapper is always empty.
+   *
+   * @return true
+   */
   public function isEmpty()
   {
     

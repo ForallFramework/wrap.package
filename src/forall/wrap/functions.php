@@ -15,13 +15,14 @@ namespace forall\wrap
   use \forall\wrap\wrappers\NumberWrapper;
   use \forall\wrap\wrappers\ObjectWrapper;
   use \forall\wrap\wrappers\StringWrapper;
+  use \forall\wrap\WrapException;
   
   /**
    * Wrap given data in its respective data wrapper based on the data type.
    *
    * @param mixed $data The data to be wrapped.
    * 
-   * @throws WrapperExcepyion If the given data type could not be matched to a wrapper.
+   * @throws WrapException If the given data type could not be matched to a wrapper.
    *
    * @return BaseData Any type of wrapper.
    */
@@ -64,7 +65,7 @@ namespace forall\wrap
     }
     
     //Can not wrap.
-    throw new WrapperException(sprintf('No wrapper implemented for data of type: %s', typeof($data)));
+    throw new WrapException(sprintf('No wrapper implemented for data of type: %s', typeof($data)));
     
   }
 
@@ -125,18 +126,18 @@ namespace forall\wrap
   }
   
   /**
-   * Unwraps up to 9 parameters automatically.
+   * Unwraps up to 10 parameters automatically.
    *
-   * @param  mixed $v0 One of 9 unwrapping sockets.
-   * @param  mixed $v1 One of 9 unwrapping sockets.
-   * @param  mixed $v2 One of 9 unwrapping sockets.
-   * @param  mixed $v3 One of 9 unwrapping sockets.
-   * @param  mixed $v4 One of 9 unwrapping sockets.
-   * @param  mixed $v5 One of 9 unwrapping sockets.
-   * @param  mixed $v6 One of 9 unwrapping sockets.
-   * @param  mixed $v7 One of 9 unwrapping sockets.
-   * @param  mixed $v8 One of 9 unwrapping sockets.
-   * @param  mixed $v9 One of 9 unwrapping sockets.
+   * @param  mixed $v0 One of 10 unwrapping sockets.
+   * @param  mixed $v1 One of 10 unwrapping sockets.
+   * @param  mixed $v2 One of 10 unwrapping sockets.
+   * @param  mixed $v3 One of 10 unwrapping sockets.
+   * @param  mixed $v4 One of 10 unwrapping sockets.
+   * @param  mixed $v5 One of 10 unwrapping sockets.
+   * @param  mixed $v6 One of 10 unwrapping sockets.
+   * @param  mixed $v7 One of 10 unwrapping sockets.
+   * @param  mixed $v8 One of 10 unwrapping sockets.
+   * @param  mixed $v9 One of 10 unwrapping sockets.
    *
    * @return void No return value. The unwrapped values are stored in the given references.
    */

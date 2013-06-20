@@ -6,58 +6,121 @@
  */
 namespace forall\wrap\wrappers;
 
-class StringWrapper extends BaseScalarData implements \ArrayAccess
+use \ArrayAccess;
+
+class StringWrapper extends AbstractScalarWrapper implements ArrayAccess
 {
   
+  //Some constants.
   const TRIM_DEFAULTS = ' \t\n\r\0\x0B';
+  const LEFT = -1;
+  const RIGHT = 1;
+  const BOTH = 0;
   
-  //Validate and set the value.
+  /**
+   * Validate and set the value.
+   *
+   * @param string $value
+   * 
+   * @throws WrapException If the given value was no string.
+   */
   public function __construct($value)
   {
     
+    //Validate.
     if(!is_string($value)){
-      throw new \exception\InvalidArgument('Expecting $value to be string. %s given.', typeof($value));
+      throw new WrapException(sprintf('Expecting $value to be string. %s given.', gettype($value)));
     }
     
+    //Set.
     $this->value = $value;
     
   }
   
-  //Semi-magic method implemented by \ArrayAccess.
-  public function offsetGet($key)
+  /**
+   * Get the character at the given index.
+   * 
+   * This method is used by PHP's ArrayAccess, and can thus be accessed through
+   * `$self[$index]`.
+   *
+   * @param int $index
+   *
+   * @return self
+   */
+  public function offsetGet($index)
   {
     
-    return new self($this->value{$key});
+    return new self($this->value{$index});
     
   }
   
-  //Semi-magic method implemented by \ArrayAccess.
-  public function offsetSet($key, $val)
+  /**
+   * Replace the character at the given index with the given value.
+   * 
+   * This method is used by PHP's ArrayAccess, and can thus be accessed through
+   * `$self[$index] = $value`.
+   *
+   * @param int $index
+   * @param string $value
+   *
+   * @return self Chaining enabled.
+   */
+  public function offsetSet($index, $value)
   {
     
-    $this->value = substr_replace($this->value, $val, $key, 1);
+    //Create and set the new value.
+    $this->value = substr_replace($this->value, $value, $index, 1);
+    
+    //Enable chaining.
+    return $this;
     
   }
   
-  //Semi-magic method implemented by \ArrayAccess.
-  public function offsetExists($key)
+  /**
+   * Return true if the character at the given index exists.
+   * 
+   * This method is used by PHP's ArrayAccess, and can thus be accessed through stuff like
+   * `isset($self[$index])` and `array_key_exists($index, $self)`.
+   *
+   * @param int $index
+   *
+   * @return boolean
+   */
+  public function offsetExists($index)
   {
     
-    return ($this->length() >= ($key+1));
+    return ($this->length() >= ($index+1));
     
   }
   
-  //Semi-magic method implemented by \ArrayAccess.
-  public function offsetUnset($key)
+  /**
+   * Remove the character at the given index from the string.
+   *
+   * This method is used by PHP's ArrayAccess, and can thus be accessed through
+   * `unset($self[$index])`.
+   *
+   * @param int $index
+   *
+   * @return self Chaining enabled.
+   */
+  public function offsetUnset($index)
   {
     
-    $this->value = substr_replace($this->value, $val, '', 1);
+    //Remove the character at given index.
+    $this->value = substr_replace($this->value, $index, '', 1);
+    
+    //Enable chaining.
+    return $this;
     
   }
   
-
-  
-  //Return $this. ;)
+  /**
+   * Return $this. ;)
+   * 
+   * Pretty much a no-op with enabled chaining.
+   *
+   * @return self $this.
+   */
   public function toString()
   {
     
@@ -65,7 +128,11 @@ class StringWrapper extends BaseScalarData implements \ArrayAccess
     
   }
   
-  //Return a StringWrapper containing this string in JSON format.
+  /**
+   * Return a StringWrapper containing this string in JSON format.
+   *
+   * @return self
+   */
   public function toJSON()
   {
     
@@ -73,7 +140,11 @@ class StringWrapper extends BaseScalarData implements \ArrayAccess
     
   }
   
-  //Return a StringWrapper containing the visual representation of this string.
+  /**
+   * Return a StringWrapper containing the visual representation of this string.
+   *
+   * @return self
+   */
   public function visualize()
   {
     
@@ -81,7 +152,11 @@ class StringWrapper extends BaseScalarData implements \ArrayAccess
     
   }
   
-  //Return a NumberWrapper with the integer value of the string.
+  /**
+   * Return a NumberWrapper with the integer value of the string.
+   *
+   * @return NumberWrapper
+   */
   public function toInt()
   {
     
@@ -89,32 +164,13 @@ class StringWrapper extends BaseScalarData implements \ArrayAccess
     
   }
   
-  //Set the value of this leaf-node.
-  public function set($value)
-  {
-    
-    //We must be scalar!
-    if(is_array($value) || $value instanceof DataBranch){
-      throw new \exception\InvalidArgument(
-        'Expecting $value to be scalar. %s given.',
-        ucfirst(typeof($value))
-      );
-    }
-    
-    //Extract data into this new leaf.
-    if($value instanceof self){
-      $value = $value->get();
-    }
-    
-    //Set the value.
-    $this->value = $value;
-    
-    //Enable chaining.
-    return $this;
-    
-  }
-  
-  //Returns the wrapped alternative if the current value is empty.
+  /**
+   * Returns the wrapped alternative if the current value is empty.
+   *
+   * @param mixed $alternative Anything.
+   *
+   * @return AbstractWrapper $this Or the wrapped alternative.
+   */
   public function alt($alternative)
   {
     
@@ -122,30 +178,50 @@ class StringWrapper extends BaseScalarData implements \ArrayAccess
     
   }
   
-  //Trim specified characters off the start end end of the string.
-  //trim([$direction = BOTH, ][$characters = self::TRIM_DEFAULTS]);
+  /**
+   * Trim specified characters off the start end end of the string.
+   * 
+   * @param int $side The side in which to trim. Possible values are
+   *                  `StringWrapper::LEFT`, `StringWrapper::Right` and
+   *                  `StringWrapper::BOTH`. Or alternatively `LEFT`, `RIGHT` and `BOTH`
+   *                  from the *globalconstants* package. This defaults to BOTH when
+   *                  omitted.
+   * 
+   * @param string $characters A string of characters to trim off whichever side is being
+   *                           trimmed. Defaults to `self::TRIM_DEFAULTS` when omitted.
+   * 
+   * @return self
+   */
   public function trim()
   {
     
     //Handle arguments.
     $args = func_get_args();
     
-    //Get direction.
-    $direction = ((!empty($args) && is_int($args[0])) ? array_shift($args) : BOTH);
+    //Get side.
+    $side = ((!empty($args) && is_int($args[0])) ? array_shift($args) : self::BOTH);
     
     //Get characters.
     $characters = ((!empty($args)) ? array_shift($args) : self::TRIM_DEFAULTS);
     
     //Do the right trim.
-    switch($direction){
-      case LEFT: return new self(ltrim($this->value, $characters));
-      case BOTH: return new self(trim($this->value, $characters));
-      case RIGHT: return new self(rtrim($this->value, $characters));
+    switch($side){
+      case self::LEFT: return new self(ltrim($this->value, $characters));
+      case self::BOTH: return new self(trim($this->value, $characters));
+      case self::RIGHT: return new self(rtrim($this->value, $characters));
     }
     
   }
   
-  //Prepend the given string to this one.
+  /**
+   * Prepend the given string to this one. Returns a new StringWrapper with the result.
+   *
+   * @see self::append()
+   *
+   * @param string $string The string to prepend.
+   *
+   * @return self
+   */
   public function prepend($string)
   {
     
@@ -153,7 +229,15 @@ class StringWrapper extends BaseScalarData implements \ArrayAccess
     
   }
   
-  //Append the given string to this one.
+  /**
+   * Append the given string to this one. Returns a new StringWrapper with the result.
+   * 
+   * @see self::prepend()
+   *
+   * @param string $string The string to append.
+   *
+   * @return self
+   */
   public function append($string)
   {
     
@@ -161,7 +245,15 @@ class StringWrapper extends BaseScalarData implements \ArrayAccess
     
   }
   
-  //Alias of trim(RIGHT).
+  /**
+   * Alias of trim(RIGHT).
+   * 
+   * @see self::trim()
+   *
+   * @param string $characters {@see self::trim()}
+   *
+   * @return self
+   */
   public function chop($characters = self::TRIM_DEFAULTS)
   {
     
@@ -169,16 +261,33 @@ class StringWrapper extends BaseScalarData implements \ArrayAccess
     
   }
   
-  //Pad the string to a certain length with another string.
-  //pad([$direction = RIGHT, ]$length[, $padding = ' ']);
+  /**
+   * Pad the string to a certain length with another string.
+   * 
+   * @param int $side The side at which to pad. Possible values are
+   *                  `StringWrapper::LEFT`, `StringWrapper::Right` and
+   *                  `StringWrapper::BOTH`. Or alternatively `LEFT`, `RIGHT` and `BOTH`
+   *                  from the *globalconstants* package. This defaults to RIGHT when
+   *                  omitted.
+   * 
+   * @param int $length The amount of padding characters to add on whichever side is being
+   *                    padded. If this parameter is negative, less than, or equal to the
+   *                    length of the input string, no padding takes place.
+   * 
+   * @param string $padding The characters to add on whichever side is being padded. The
+   *                        given string will repeat until the desired $length has been
+   *                        reached. Defaults to spaces when omitted.
+   * 
+   * @return self
+   */
   public function pad()
   {
     
     //Handle arguments.
     $args = func_get_args();
     
-    //Get direction.
-    $direction = ((count($args) > 1 && is_int($args[1])) ? array_shift($args) : RIGHT);
+    //Get side.
+    $side = ((count($args) > 1 && is_int($args[1])) ? array_shift($args) : RIGHT);
     
     //Get length.
     $length = array_shift($args);
@@ -190,11 +299,18 @@ class StringWrapper extends BaseScalarData implements \ArrayAccess
     $types = [LEFT => STR_PAD_LEFT, BOTH => STR_PAD_BOTH, RIGHT => STR_PAD_RIGHT];
     
     //Go!
-    return new self(str_pad($this->value, $length, $padding, $types[$direction]));
+    return new self(str_pad($this->value, $length, $padding, $types[$side]));
     
   }
   
-  //Cut off the string if it's longer than [max], then [append] something to it.
+  /**
+   * Cut off the string if it's longer than the given maximum, then append something to it.
+   *
+   * @param int $max The maximum allowed string length.
+   * @param string $append An optional extra bit to append when cutting occurs.
+   *
+   * @return self
+   */
   public function max($max, $append = '')
   {
     
@@ -211,7 +327,13 @@ class StringWrapper extends BaseScalarData implements \ArrayAccess
     
   }
   
-  //Repeat the string n times.
+  /**
+   * Repeat the string a given amount of times.
+   *
+   * @param int $n The amount of times to repeat.
+   *
+   * @return self
+   */
   public function repeat($n)
   {
     
@@ -219,7 +341,15 @@ class StringWrapper extends BaseScalarData implements \ArrayAccess
     
   }
   
-  //Replaces [search] with [replacement] and fills [count] with the amount of replacements done.
+  /**
+   * Replaces [search] with [replacement] and fills [count] with the amount of replacements done.
+   *
+   * @param string $search The sub-string to look for.
+   * @param string $replacement The string to replace the occurrences with.
+   * @param integer $count This is a reference that will be filled with the amount of occurrences.
+   *
+   * @return self
+   */
   public function replace($search, $replacement='', &$count = 0)
   {
     
@@ -227,7 +357,14 @@ class StringWrapper extends BaseScalarData implements \ArrayAccess
     
   }
   
-  //Return a slice of the string.
+  /**
+   * Return a slice of the string.
+   *
+   * @param integer $offset Where to start the slice.
+   * @param integer $length How long the slice should be. Slices to the end if omitted.
+   *
+   * @return self
+   */
   public function slice($offset=0, $length=null)
   {
     
@@ -241,31 +378,47 @@ class StringWrapper extends BaseScalarData implements \ArrayAccess
     
   }
   
-  //Perform a regular expression and return a wrapped array containing the matches.
-  //Parse changes the success state based on if there are results!
+  /**
+   * Perform a regular expression and return a wrapped array containing the matches.
+   *
+   * @param string $regex The regular expression to perform.
+   * @param integer $flags Flags to pass to `preg_match`.
+   * @param integer $offset At which offset (in bytes) to start matching.
+   *
+   * @return ArrayWrapper
+   */
   public function parse($regex, $flags=0, $offset=0)
   {
     
     //Try to parse using the given arguments.
-    try{
-      $this->is(preg_match($regex, $this->get(), $matches, $flags, $offset));
-      return new ArrayWrapper($matches);
-    }
+    preg_match($regex, $this->get(), $matches, $flags, $offset);
     
-    //Throw a parsing exception when it fails.
-    catch(\exception\Error $e){
-      $this->is(false);
-      $new = new \exception\Parsing(
-        'An error occured while parsing "%s" using "%s": %s',
-        $this->value, $regex, $e->getMessage()
-      );
-      $new->setPrev($e);
-      throw $new;
-    }
+    //Return the matches.
+    return new ArrayWrapper($matches);
     
   }
   
-  //Return a new DataLeaf, containing the value of this one but lowercased.
+  /**
+   * Return true if the wrapped string matches with the given regular expression.
+   *
+   * @param string $regex The regular expression to perform.
+   * @param integer $flags Flags to pass to `preg_match`.
+   * @param integer $offset At which offset (in bytes) to start matching.
+   *
+   * @return boolean
+   */
+  public function isMatch($regex, $flags=0, $offset=0)
+  {
+    
+    return (preg_match($regex, $this->get(), $a, $flags, $offset) === 1);
+    
+  }
+  
+  /**
+   * Return a new DataLeaf, containing the value of this one but in lower case.
+   *
+   * @return self
+   */
   public function lowercase()
   {
     
@@ -273,7 +426,11 @@ class StringWrapper extends BaseScalarData implements \ArrayAccess
     
   }
   
-  //Return a new DataLeaf, containing the value of this one but uppercased.
+  /**
+   * Return a new DataLeaf, containing the value of this one but in upper case.
+   *
+   * @return self
+   */
   public function uppercase()
   {
     
@@ -281,7 +438,13 @@ class StringWrapper extends BaseScalarData implements \ArrayAccess
     
   }
   
-  //Return a new DataLeaf containing the HTML escaped value of this node.
+  /**
+   * Return a new DataLeaf containing the HTML escaped value of this node.
+   *
+   * @param integer $flags Flags to pass to `htmlentities`.
+   *
+   * @return self
+   */
   public function htmlescape($flags=50)
   {
     
@@ -289,7 +452,11 @@ class StringWrapper extends BaseScalarData implements \ArrayAccess
     
   }
   
-  //Parse the string as URL encrypted data and return the resulting array.
+  /**
+   * Parse the string as URL encrypted data and return the resulting array.
+   *
+   * @return ArrayWrapper
+   */
   public function decode()
   {
     
@@ -301,8 +468,15 @@ class StringWrapper extends BaseScalarData implements \ArrayAccess
     
   }
   
-  //Split the string value of this node into pieces, give string to use it as delimiter
-  //or int to split into chunks of given size.
+  /**
+   * Split the string up based on given splitter.
+   *
+   * @param int|string $s When an integer, splits the string up into chucks of that size.
+   *                      When a string, splits the string on each occurrence of it.
+   *                      When null or omitted, splits the string into characters.
+   *
+   * @return ArrayWrapper An array with each part that the string was split up into.
+   */
   public function split($s=null)
   {
     
@@ -330,7 +504,11 @@ class StringWrapper extends BaseScalarData implements \ArrayAccess
     
   }
   
-  //Return the length of the string contained in this node.
+  /**
+   * Return the length of the string contained in this node.
+   *
+   * @return int The amount of characters in the wrapped string.
+   */
   public function length()
   {
     
@@ -338,7 +516,11 @@ class StringWrapper extends BaseScalarData implements \ArrayAccess
     
   }
   
-  //Returns true of this string has no characters.
+  /**
+   * Returns true of this string has no characters.
+   *
+   * @return boolean
+   */
   public function isEmpty()
   {
     

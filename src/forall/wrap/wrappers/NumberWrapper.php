@@ -6,22 +6,36 @@
  */
 namespace forall\wrap\wrappers;
 
-class NumberWrapper extends BaseScalarData
+use forall\wrap\WrapException;
+
+class NumberWrapper extends AbstractScalarWrapper
 {
   
-  //Validate and set the value.
+  /**
+   * Validate and set the value.
+   *
+   * @param int|double $value The number to set.
+   * 
+   * @throws WrapException If the given value was not a number.
+   */
   public function __construct($value)
   {
     
+    //Validate.
     if(!(is_int($value) || is_float($value) || is_real($value) || is_long($value))){
-      throw new \exception\InvalidArgument('Expecting $value to be a number. %s given.', typeof($value));
+      throw new WrapException(sprintf('Expecting $value to be a number. %s given.', gettype($value)));
     }
     
+    //Set.
     $this->value = $value;
     
   }
   
-  //Cast the number to string.
+  /**
+   * Cast the number to string.
+   *
+   * @return StringWrapper
+   */
   public function toString()
   {
     
@@ -29,7 +43,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Return a StringWrapper containing the number in JSON format.
+  /**
+   * Return a StringWrapper containing the number in JSON format.
+   *
+   * @return StringWrapper
+   */
   public function toJSON()
   {
     
@@ -37,7 +55,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Return a StringWrapper containing the visual representation of this number.
+  /**
+   * Return a StringWrapper containing the visual representation of this number.
+   *
+   * @return StringWrapper
+   */
   public function visualize()
   {
     
@@ -45,7 +67,13 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Return the wrapped alternative if this number is zero or lower.
+  /**
+   * Return the wrapped alternative if this number is zero or lower.
+   *
+   * @param mixed $alternative Anything.
+   *
+   * @return AbstractWrapper $this Or the wrapped alternative.
+   */
   public function alt($alternative)
   {
     
@@ -58,7 +86,11 @@ class NumberWrapper extends BaseScalarData
   ## MATH
   ##
   
-  //Returns the absolute value of this number.
+  /**
+   * Returns the absolute value of this number.
+   *
+   * @return self
+   */
   public function abs()
   {
     
@@ -66,7 +98,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Returns the arc-cosine of this number.
+  /**
+   * Returns the arc-cosine of this number.
+   *
+   * @return self
+   */
   public function acos()
   {
     
@@ -74,7 +110,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Returns the inverse hyperbolic cosine of this number.
+  /**
+   * Returns the inverse hyperbolic cosine of this number.
+   *
+   * @return self
+   */
   public function acosh()
   {
     
@@ -82,7 +122,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Returns the arcsine of this number.
+  /**
+   * Returns the arcsine of this number.
+   *
+   * @return self
+   */
   public function asin()
   {
     
@@ -90,7 +134,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Returns the inverse hyperbolic sine of this number.
+  /**
+   * Returns the inverse hyperbolic sine of this number.
+   *
+   * @return self
+   */
   public function asinh()
   {
     
@@ -98,7 +146,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Returns the arctangent of this number as a numeric value between -PI/2 and PI/2 radians.
+  /**
+   * Returns the arctangent of this number as a numeric value between -PI/2 and PI/2 radians.
+   *
+   * @return self
+   */
   public function atan()
   {
     
@@ -106,7 +158,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Returns the inverse hyperbolic tangent of this number.
+  /**
+   * Returns the inverse hyperbolic tangent of this number.
+   *
+   * @return self
+   */
   public function atanh()
   {
     
@@ -114,7 +170,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Returns the value of this number rounded upwards to the nearest integer.
+  /**
+   * Returns the value of this number rounded upwards to the nearest integer.
+   *
+   * @return self
+   */
   public function ceil()
   {
     
@@ -122,7 +182,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Returns the cosine of this number.
+  /**
+   * Returns the cosine of this number.
+   *
+   * @return self
+   */
   public function cos()
   {
     
@@ -130,7 +194,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Returns the hyperbolic cosine of this number.
+  /**
+   * Returns the hyperbolic cosine of this number.
+   *
+   * @return self
+   */
   public function cosh()
   {
     
@@ -138,7 +206,13 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Divide.
+  /**
+   * Divide the wrapped number by the given number.
+   *
+   * @param int|double|string $n Numeric value.
+   *
+   * @return self
+   */
   public function divide($n)
   {
     
@@ -146,7 +220,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Returns the value of Ex.
+  /**
+   * Returns the value of Ex.
+   *
+   * @return self
+   */
   public function exp()
   {
     
@@ -154,7 +232,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Returns the value of Ex - 1.
+  /**
+   * Returns the value of Ex - 1.
+   *
+   * @return self
+   */
   public function expm1()
   {
     
@@ -162,7 +244,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Returns the value of this number rounded downwards to the nearest integer.
+  /**
+   * Returns the value of this number rounded downwards to the nearest integer.
+   *
+   * @return self
+   */
   public function floor()
   {
     
@@ -170,7 +256,13 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Returns the value of this number to the power of n.
+  /**
+   * Returns the value of this number to the power of n.
+   *
+   * @param int|double|string $n Numeric value.
+   *
+   * @return self
+   */
   public function pow($n)
   {
     
@@ -178,15 +270,26 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Converts this number from one base to another, returns the result as string.
+  /**
+   * Converts this number from one base to another, returns the result as string.
+   *
+   * @param int $from The base to use as starting point.
+   * @param int $to The base to convert to.
+   *
+   * @return StringWrapper
+   */
   public function rebase($from, $to)
   {
     
-    return wrap(base_convert($this->value, $from, $to));
+    return new StringWrapper((string) base_convert($this->value, $from, $to));
     
   }
   
-  //Rounds this number to the nearest integer.
+  /**
+   * Rounds this number to the nearest integer.
+   *
+   * @return self
+   */
   public function round()
   {
     
@@ -194,7 +297,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Returns the sine of this number.
+  /**
+   * Returns the sine of this number.
+   *
+   * @return self
+   */
   public function sin()
   {
     
@@ -202,7 +309,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Returns the hyperbolic sine of this number.
+  /**
+   * Returns the hyperbolic sine of this number.
+   *
+   * @return self
+   */
   public function sinh()
   {
     
@@ -210,7 +321,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Returns the square root of this number.
+  /**
+   * Returns the square root of this number.
+   *
+   * @return self
+   */
   public function sqrt()
   {
     
@@ -218,7 +333,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Returns the tangent of an angle.
+  /**
+   * Returns the tangent of an angle.
+   *
+   * @return self
+   */
   public function tan()
   {
     
@@ -226,7 +345,13 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Multiply.
+  /**
+   * Multiply the wrapped number by the given number.
+   *
+   * @param int|double|string $n Numeric value.
+   *
+   * @return self
+   */
   public function times($n)
   {
     
@@ -234,7 +359,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Returns the hyperbolic tangent of an angle.
+  /**
+   * Returns the hyperbolic tangent of an angle.
+   *
+   * @return self
+   */
   public function tanh()
   {
     
@@ -247,7 +376,13 @@ class NumberWrapper extends BaseScalarData
   ## BITS
   ##
   
-  //Check if a bitwise haystack contains the needle bit.
+  /**
+   * Check if a bitwise haystack contains the needle bit.
+   *
+   * @param int $needle The bits to check.
+   *
+   * @return boolean Whether the wrapped number contained the given bits.
+   */
   public function hasBit($needle)
   {
     
@@ -255,7 +390,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Counts the amount of bits set to 1.
+  /**
+   * Returns the number of bits set to 1 in the wrapped number.
+   *
+   * @return self
+   */
   public function countBits()
   {
     
@@ -271,7 +410,11 @@ class NumberWrapper extends BaseScalarData
   ## INFO
   ##
   
-  //Returns true if the number is finite.
+  /**
+   * Returns true if the number is finite.
+   *
+   * @return boolean
+   */
   public function isFinite()
   {
     
@@ -279,7 +422,11 @@ class NumberWrapper extends BaseScalarData
     
   }
   
-  //Returns true if the number is infinite.
+  /**
+   * Returns true if the number is infinite.
+   *
+   * @return boolean
+   */
   public function isInfinite()
   {
     
