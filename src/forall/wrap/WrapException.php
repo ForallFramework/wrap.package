@@ -4,7 +4,7 @@
  * @package forall.wrap
  * @author Avaq <aldwin.vlasblom@gmail.com>
  */
-namespace forall\loader;
+namespace forall\wrap;
 
 use \Exception;
 
