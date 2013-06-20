@@ -1,4 +1,4 @@
-# Wrap - Version 0.0.2 Alpha
+# Wrap - Version 0.1.0 Beta
 
 ## Description
 
@@ -14,7 +14,40 @@ of utility functions.
 
 ### Wrappers
 
-None implemented yet.
+Every native data type has a respective wrapper. A function in the global scope is made
+available to wrap any such data in their wrapper:
+
+```php
+wrap(['foo' => 'bar']);
+```
+
+This would return a new ArrayWrapper, wrapping the passed array. The array wrapper
+implements most of the array utility traits. All wrappers implement the successible
+interface. We can now access all of these methods and more for the wrapped data, for
+example:
+
+```php
+//Wrap a string.
+wrap('world[Hello')
+
+//Split the string on "[". This returns an ArrayWrapper.
+->split('[')
+
+//Reverse the array.
+->reverse()
+
+//Join the nodes together. This returns a StringWrapper.
+->join(', ')
+
+//Append a period.
+->append('.')
+
+//Assign the wrapper to a variable and terminate the chain with ";".
+->put($var);
+
+//Write: "Hello, world."
+echo $var;
+```
 
 ### Successible
 
