@@ -1,3 +1,10 @@
+#### [Version 0.1.1 Beta](https://github.com/ForallFramework/wrap.package/tree/0.1.1-beta)
+_20-Aug-2013_
+
+* Fixed: The pluck method on the ArrayWrapper causes an error.
+* Fixed: Can not instantiate without arguments to get an empty array.
+* Removed trailing white-space.
+
 #### [Version 0.1.0 Beta](https://github.com/ForallFramework/wrap.package/tree/0.1.0-beta)
 _20-June-2013_
 

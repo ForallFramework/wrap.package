@@ -45,7 +45,7 @@ class ArrayWrapper extends AbstractWrapper implements IteratorAggregate, ArrayAc
    *
    * @param array $arr
    */
-  public function __construct(array $arr)
+  public function __construct(array $arr = [])
   {
     
     $this->arr = $arr;
@@ -54,7 +54,7 @@ class ArrayWrapper extends AbstractWrapper implements IteratorAggregate, ArrayAc
   
   /**
    * Returns a reference to the wrapped array.
-   * 
+   *
    * @return array
    */
   public function & getArrayReference()
@@ -82,7 +82,7 @@ class ArrayWrapper extends AbstractWrapper implements IteratorAggregate, ArrayAc
   
   /**
    * JSON encode the array and return the result in a StringWrapper.
-   * 
+   *
    * Chooses intelligently whether to use a JSON object or an array.
    *
    * @return StringWrapper Containing a string of JSON data.
@@ -166,13 +166,13 @@ class ArrayWrapper extends AbstractWrapper implements IteratorAggregate, ArrayAc
   
   /**
    * Create a map using the wrapped array.
-   * 
+   *
    * Returns a new ArrayObject by iterating over the data and using the return value from
    * the callback to populate a new array.
-   * 
+   *
    * @param Closure $callback The closure to use for the mapping. It is called with three
    *                          arguments: The value, the key and the index.
-   * 
+   *
    * @return self The result of the mapping
    */
   public function map(Closure $callback)
@@ -195,10 +195,10 @@ class ArrayWrapper extends AbstractWrapper implements IteratorAggregate, ArrayAc
   
   /**
    * Return a new ArrayWrapper filled with the nodes that were at the given keys.
-   * 
+   *
    * This method is basically shorthand for calling self::map(), where the given closure
    * returns a sub-node from every iteration.
-   * 
+   *
    * @see self::map()
    *
    * @param mixed $key The first key to look for.
@@ -209,6 +209,7 @@ class ArrayWrapper extends AbstractWrapper implements IteratorAggregate, ArrayAc
   public function pluck()
   {
     
+    
     //Create a new instance.
     $return = new self;
     
@@ -218,7 +219,7 @@ class ArrayWrapper extends AbstractWrapper implements IteratorAggregate, ArrayAc
       
       //Grab the sub node of the current node for every argument passed to this function.
       foreach(func_get_args() as $key){
-        $node = $node->offsetGet($key);
+        $node = $node[$key];
       }
       
       //Push the last node into the new instance.
@@ -233,7 +234,7 @@ class ArrayWrapper extends AbstractWrapper implements IteratorAggregate, ArrayAc
   
   /**
    * Return a new ArrayObject, excluding the nodes that were not in the given keys.
-   * 
+   *
    * One can optionally specify a new name for a key by setting it as the key. This only
    * works for associative (string) keys.
    *
@@ -270,9 +271,9 @@ class ArrayWrapper extends AbstractWrapper implements IteratorAggregate, ArrayAc
   
   /**
    * Returns a new ArrayObject, excluding the nodes that were in the given keys.
-   * 
+   *
    * Does the same as `self::having()`, except it excludes instead of includes.
-   * 
+   *
    * @see self::having()
    *
    * @param array $keys The keys that will be excluded.
@@ -289,7 +290,7 @@ class ArrayWrapper extends AbstractWrapper implements IteratorAggregate, ArrayAc
   
   /**
    * Return a new ArrayObject containing only the nodes that made the given callback return true.
-   * 
+   *
    * The wrapped array is iterated, and for each node the given callback will be executed.
    * The node will make it into the return array if the callback returned true for it.
    *
@@ -357,19 +358,19 @@ class ArrayWrapper extends AbstractWrapper implements IteratorAggregate, ArrayAc
   
   /**
    * Boils down the array of values into a single value.
-   * 
+   *
    * @param int $mode Whether to reduce left or reduce right. Can be omitted. Possible
    *                  values are: `ArrayWrapper::LEFT`, `ArrayWrapper::RIGHT` or `LEFT`
-   *                  and `RIGHT` from the *globalconstants* package. Defaults to 
+   *                  and `RIGHT` from the *globalconstants* package. Defaults to
    *                  `self::LEFT`.
    *
    * @param callable $callback The callback to use during reduction. This is passed three
    *                           parameters: The output from the previous iteration, the
    *                           value of the current node and the key of the current node.
-   * 
+   *
    * @param mixed $initial The initial value to pass during the first iteration.
    *                       Defaults to NULL when omitted.
-   * 
+   *
    * @return AbstractWrapper A new wrapper containing the output of the last iteration.
    */
   public function reduce()
@@ -416,7 +417,7 @@ class ArrayWrapper extends AbstractWrapper implements IteratorAggregate, ArrayAc
   
   /**
    * Returns a string created of all keys and values converted to strings and joined together.
-   * 
+   *
    * Like join, but instead of using just the values it will concatenate the key and value
    * together using the delimiter.
    *
@@ -534,7 +535,7 @@ class ArrayWrapper extends AbstractWrapper implements IteratorAggregate, ArrayAc
   
   /**
    * Return the node under the given key wrapped in a new Data object.
-   * 
+   *
    * This is short for doing: `forall\wrap\wrap($this->offsetGet($key))`.
    *
    * @param mixed $key The key of the sub-node to wrap.
@@ -556,13 +557,13 @@ class ArrayWrapper extends AbstractWrapper implements IteratorAggregate, ArrayAc
   
   /**
    * Return the node under [key] if it was wrapped, otherwise wrap it first.
-   * 
+   *
    * Does the same as `self::wrap`, except skips the wrapping if the node already contains
    * a wrapper.
-   * 
+   *
    * @see self::wrap()
    *
-   * @param mixed $key The key of the sun-node to wrap or return. 
+   * @param mixed $key The key of the sun-node to wrap or return.
    *
    * @return [type] [description]
    */
@@ -619,7 +620,7 @@ class ArrayWrapper extends AbstractWrapper implements IteratorAggregate, ArrayAc
     
   /**
    * Returns an ArrayIterator wrapping the wrapped array.
-   * 
+   *
    * This is mainly for PHP's internal use.
    *
    * @return ArrayIterator

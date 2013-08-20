@@ -22,7 +22,7 @@
   },
   
   "suggest": {
-    "forall/globalconstant": "Allows shorter notation of some of the generic constants used."
+    "forall/constants": "Allows shorter notation of some of the generic constants used."
   },
   
   "autoload": {

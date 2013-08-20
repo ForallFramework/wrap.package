@@ -1,10 +1,10 @@
-# Wrap - Version 0.1.0 Beta
+# Wrap - Version 0.1.1 Beta
 
 ## Description
 
 The "wrap" package for the Forall Framework. This is a utility library that provides
 wrappers for all native data types, allowing them to be wrapped for access to a number
-of utility functions. 
+of utility functions.
 
 ## Features
 
@@ -133,5 +133,5 @@ The change-log can be found in `CHANGES.md` in this directory.
 
 Copyright (c) 2013 Avaq, https://github.com/Avaq
 
-Forall is licensed under the MIT license. The license is included as `LICENSE.md` in the 
+Forall is licensed under the MIT license. The license is included as `LICENSE.md` in the
 [Forall environment repository](https://github.com/ForallFramework/Forall).
