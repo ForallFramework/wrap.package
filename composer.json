@@ -21,10 +21,6 @@
     "php": ">=5.4.0"
   },
   
-  "suggest": {
-    "forall/constants": "Allows shorter notation of some of the generic constants used."
-  },
-  
   "autoload": {
     "psr-0": {
       "forall\\wrap": "src/"

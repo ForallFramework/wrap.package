@@ -183,9 +183,7 @@ class StringWrapper extends AbstractScalarWrapper implements ArrayAccess
    * 
    * @param int $side The side in which to trim. Possible values are
    *                  `StringWrapper::LEFT`, `StringWrapper::Right` and
-   *                  `StringWrapper::BOTH`. Or alternatively `LEFT`, `RIGHT` and `BOTH`
-   *                  from the *globalconstants* package. This defaults to BOTH when
-   *                  omitted.
+   *                  `StringWrapper::BOTH`. This defaults to BOTH when omitted.
    * 
    * @param string $characters A string of characters to trim off whichever side is being
    *                           trimmed. Defaults to `self::TRIM_DEFAULTS` when omitted.
@@ -266,9 +264,7 @@ class StringWrapper extends AbstractScalarWrapper implements ArrayAccess
    * 
    * @param int $side The side at which to pad. Possible values are
    *                  `StringWrapper::LEFT`, `StringWrapper::Right` and
-   *                  `StringWrapper::BOTH`. Or alternatively `LEFT`, `RIGHT` and `BOTH`
-   *                  from the *globalconstants* package. This defaults to RIGHT when
-   *                  omitted.
+   *                  `StringWrapper::BOTH`. This defaults to RIGHT when omitted.
    * 
    * @param int $length The amount of padding characters to add on whichever side is being
    *                    padded. If this parameter is negative, less than, or equal to the

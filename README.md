@@ -1,4 +1,4 @@
-# Wrap - Version 0.1.1 Beta
+# Wrap - Version 0.1.2 Beta
 
 ## Description
 

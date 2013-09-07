@@ -360,8 +360,7 @@ class ArrayWrapper extends AbstractWrapper implements IteratorAggregate, ArrayAc
    * Boils down the array of values into a single value.
    *
    * @param int $mode Whether to reduce left or reduce right. Can be omitted. Possible
-   *                  values are: `ArrayWrapper::LEFT`, `ArrayWrapper::RIGHT` or `LEFT`
-   *                  and `RIGHT` from the *globalconstants* package. Defaults to
+   *                  values are: `ArrayWrapper::LEFT`, `ArrayWrapper::RIGHT`. Defaults to
    *                  `self::LEFT`.
    *
    * @param callable $callback The callback to use during reduction. This is passed three
